@@ -1,3 +1,5 @@
+package newpackage;
+
 
 
 /*
@@ -10,23 +12,25 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import javax.mail.internet.HeaderTokenizer;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import org.jboss.weld.servlet.SessionHolder;
 
 /**
  *
  * @author ulakbim
  */
-public class login extends HttpServlet {
+public class search extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,10 +49,10 @@ public class login extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet login</title>");            
+            out.println("<title>Servlet search</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet login at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet search at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -66,8 +70,7 @@ public class login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
-        
+        //processRequest(request, response);      
         String JDBC_DRIVER="com.mysql.jdbc.Driver";
         String DB_URL="jdbc:mysql://127.0.0.1:3306/profile";
         
@@ -77,10 +80,28 @@ public class login extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         
-        String email = request.getParameter("email");
+        String names = request.getParameter("search");
         
-        String password = request.getParameter("password");
-            
+        char[] arr = names.toCharArray();
+        int i = 0;
+        int flag =0;
+        String firstName ="";
+        String lastName ="";
+        
+        while( i != arr.length) {
+            if(arr[i] == ' ') {
+               flag=1; 
+               i++;
+            }
+            if(flag == 0) {                          
+                firstName += arr[i];
+            }
+            else {
+                lastName += arr[i];
+            }
+
+            i++;
+        }
         //out.println("entered email: " + email);
         //out.println("entered password: " + password);
         
@@ -91,57 +112,67 @@ public class login extends HttpServlet {
             
             Statement stmt = conn.createStatement();
             
+            int id=0;
+            String email="";
+            String imgUrl="";
             String sql;
-            sql = "select * from profilepage where email='" + email + "'";
+            sql = "select * from profilepage where firstName='" + firstName + "' and lastName='" + lastName + "'";
             ResultSet rs = stmt.executeQuery(sql);
             //rs.next();
             //out.println("<font color='red'><b>asdfasdfasdfa</b></font>");
-            int a=1;
-            while(true) {
-                if(rs.next()!=true) {
-                    RequestDispatcher rd = request.getRequestDispatcher(("login_failure.jsp"));
-                    rd.forward(request, response);
-                }
-                else if( rs.getString("password").equals(password))
-                {
-                    int id = rs.getInt("id");
-                    String id_string = Integer.toString(id);
-                    
-                    Cookie id_cookie = new Cookie("user_id", id_string);
-                    Cookie firstName = new Cookie("firstName", rs.getString("firstName"));
-                    Cookie lastName = new Cookie("lastName", rs.getString("lastName"));
-                    Cookie imgurl = new Cookie("imgurl", rs.getString("imgurl"));
-                    id_cookie.setMaxAge(60*60*24);
-                    firstName.setMaxAge(60*60*24);
-                    lastName.setMaxAge(60*60*24);
-                    imgurl.setMaxAge(60*60*24);
-                    response.addCookie(id_cookie);
-                    response.addCookie(firstName);
-                    response.addCookie(lastName);
-                    response.addCookie(imgurl);
-                    
-                    out.println("<font color='red'><b>password is correct</b></font>");
-                    request.setAttribute("email", email);
-                    RequestDispatcher rd = request.getRequestDispatcher("profile");
-                    rd.forward(request, response);
-                }
-                else if (rs.getString("email").isEmpty()) {
-                    RequestDispatcher rd = request.getRequestDispatcher("login_failure.jsp");
-                    rd.include(request, response);
-                }
-                else {
-                    RequestDispatcher rd = request.getRequestDispatcher(("login_failure.jsp"));
-                    rd.include(request, response);
-                } 
+            List<profileClass> profile = new ArrayList<>();
+            while(rs.next()) {
+                profileClass prof = new profileClass();
+
+                email = rs.getString("email");
+                id = rs.getInt("id");
+                imgUrl = rs.getString("imgurl");
+                
+                /*int id = rs.getInt("id");
+                int user_id = rs.getInt("firstName");
+                int writer_id  = rs.getInt("lastName");*/
+                //String comment = rs.getString("comment");
+                //int comment_reply_id = rs.getInt("comment_reply_id");
+                
+                prof.setEmail(email);
+                prof.setFirstName(firstName);
+                prof.setLastName(lastName);
+                prof.setId(id);
+                prof.setImgUrl(imgUrl);
+                profile.add(prof);
+                /*
+                comm.setId(id);
+                //comm.setUser_id(user_id);
+                comm.setWriter_id(writer_id);
+                //comm.setComment(comment);
+                //comm.setComment_reply_id(comment_reply_id);
+                comments.add(comm);*/
+                
+                // sending request to comments by id 
+                //request.setAttribute("id", id);
+                //RequestDispatcher rd = request.getRequestDispatcher("commentServlet");
+                //rd.forward(request, response);
             }
-        } catch (SQLException se) {
-            RequestDispatcher rd = request.getRequestDispatcher(("login_failure.jsp"));
-            rd.forward(request, response);
-        
-        } catch ( Exception e ) {
-            RequestDispatcher rd = request.getRequestDispatcher(("login_failure.jsp"));
-            rd.forward(request, response);
+            request.setAttribute("firstName", firstName);
+            request.setAttribute("lastName", lastName);
+            request.setAttribute("id", id);
+            request.setAttribute("email", email);
+            request.setAttribute("profile", profile);
+            request.setAttribute("imgUrl", imgUrl);
+            //HttpSession session = request.getSession(true);
+            //Object user_id = session.getAttribute("user_id");
+            //String user_id_string = user_id.toString();
+            request.setAttribute("user_id", id);
+            request.getRequestDispatcher("/profile.jsp").forward(request, response);
+            
+            rs.close();
+            stmt.close();
+            conn.close();
+            
+        } catch (Exception e) {
+            out.println("catch search");
         }
+        
     }
 
     /**

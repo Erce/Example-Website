@@ -20,7 +20,7 @@
             Object firstName = request.getAttribute("firstName");
             Object lastName = request.getAttribute("lastName");
             Object id = request.getAttribute("id");
-            Object imgurl = request.getAttribute("imgurl");
+            Object imgurl = request.getAttribute("imgUrl");
             /*profileClass profile = new profileClass();
             String firstName = request.getParameter("firstName");
             String lastName = request.getParameter("lastName");
@@ -34,7 +34,7 @@
             <div class="navbar">
                 <div class="menu">
                     <ul class="menu-ul">
-                        <li class="menu-li"><a href="index.html"><div class="menu-item"><h class="menu-item-h">MAIN PAGE</h></div></a></li>
+                        <li class="menu-li"><a href="login.jsp"><div class="menu-item"><h class="menu-item-h">MAIN PAGE</h></div></a></li>
                         <li class="menu-li"><a href="search.jsp"><div class="menu-item"><h class="menu-item-h">SEARCH</h></div></a></li>
                         <li class="menu-li"><a href="signup.jsp"><div class="menu-item"><h class="menu-item-h">SIGN UP</h></div></a></li>
                         <li class="menu-li"><a href="about.html"><div class="menu-item"><h class="menu-item-h">ABOUT</h></div></a></li>

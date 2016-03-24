@@ -51,11 +51,15 @@ div.mainPage {
 }
 
 #submit {
-    float: right;
-    height: 50px;
-    margin-top: 10px;
-    margin-left: -70px;
-    position: absolute;
+    height: 23px;
+    width: 23px;
+    top: 4px;
+    margin-left: -32px;
+    position: relative;
+    background: url("ftp://ftp.ercecanbalcioglu.com/Photos/search.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    border-radius: 5px;
 }
 
 .search {
@@ -76,6 +80,17 @@ div.mainPage {
     min-width: 200px;
     padding-left: 10px;
     width: 90%;
+}
+
+.logout-div {
+    float:right;
+    margin-right: 40px;
+    margin-top: 15px;
+}
+
+.logout-h {
+    color: rgba(54,47,45,1);
+    font-size: 100%;
 }
 
 .menu {
@@ -193,7 +208,7 @@ h.menu-item-h {
 .comment {
     min-width: 500px;
     min-height: 230px;
-    float:left;
+    float:right;
     display:inline-block;
     background-color: rgb(54,47,45); 
     border-radius: 5px;

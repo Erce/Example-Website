@@ -1,3 +1,5 @@
+package newpackage;
+
 
 
 /*
@@ -92,13 +94,12 @@ public class profile extends HttpServlet {
             int flag=0;
             boolean a;
             int user_id=0;
-            if( a= rs.next() ) {
+            if(a=rs.next()) {
                 flag = 1;
             }
             List<profileClass> profile = new ArrayList<>();
             while(a) {
-                profileClass prof = new profileClass();
-                
+                profileClass prof = new profileClass();               
                 String firstName = rs.getString("firstName");
                 String lastName = rs.getString("lastName");
                 int id = rs.getInt("id");
@@ -109,6 +110,8 @@ public class profile extends HttpServlet {
                 request.setAttribute("firstName", firstName);
                 request.setAttribute("lastName", lastName);
                 request.setAttribute("id", id);
+                request.setAttribute("user_id", id);
+                request.setAttribute("imgurl", imgurl);
                 //request.getRequestDispatcher("/profile.jsp").forward(request, response);
                 
                 //**********
@@ -132,7 +135,7 @@ public class profile extends HttpServlet {
                 comments.add(comm);*/
                 
                 // sending request to comments by id 
-                request.setAttribute("imgurl", imgurl);
+                
                 user_id = id;
                 a = rs.next();
             }
@@ -142,7 +145,7 @@ public class profile extends HttpServlet {
                 //out.print(gs.toJson(res));
             }
             
-            Cookie cookie = null;
+            /*Cookie cookie = null;
             Cookie[] cookies = null;
             
             cookies = request.getCookies();
@@ -165,8 +168,8 @@ public class profile extends HttpServlet {
                 request.setAttribute("lastName", lastName);
                 request.setAttribute("imgurl", imgurl);
                 rs = stmt.executeQuery(sql1);
-            }
-            else if (cookies != null) {
+            }*/
+            /*else if (cookies != null) {
                 String value=null;
                 String name;
                 for(int i=0; i<cookies.length; i++) {
@@ -183,11 +186,14 @@ public class profile extends HttpServlet {
             else {
                 sql = "select * from comments where user_id=" + user_id;
                 rs = stmt.executeQuery(sql);
-            }
-
-            int count = 0;
+            }*/
+ 
             //String ad = rs.getString("first");
             //String soyad = rs.getString("soyad");
+            
+            int count = 0;       
+            sql = "select * from comments where user_id=" + user_id;
+            rs = stmt.executeQuery(sql);
             
             List<comments> commArr = new ArrayList<>();
             List<comments> replyArr = new ArrayList<>();
@@ -213,7 +219,7 @@ public class profile extends HttpServlet {
 
             request.setAttribute("comm", commArr);
             request.setAttribute("replyArr", replyArr);
-            request.setAttribute("count", 8);
+            request.setAttribute("count", count);
             
             request.setAttribute("user_id", user_id);
             RequestDispatcher rd = request.getRequestDispatcher("ownprofile.jsp");
@@ -253,4 +259,27 @@ public class profile extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    
+    public boolean getCookieInfo(HttpServletRequest request, HttpServletResponse response)
+    {
+        Cookie[] cookies = request.getCookies();
+        Cookie cookie;
+        String value=null;
+        boolean flag=false;
+        String name;
+        for(int i=0; i<cookies.length; i++) {
+            cookie = cookies[i];
+            name = cookie.getName();
+            value = cookie.getValue();
+            if(value != null) {
+                flag=true;
+            }
+            else 
+            {
+                flag=false;
+                break;
+            }
+        }
+        return flag;
+    }
 }

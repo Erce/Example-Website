@@ -1,3 +1,5 @@
+package newpackage;
+
 
 
 /*
@@ -8,6 +10,14 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ulakbim
  */
-public class commentReply extends HttpServlet {
+public class friendsServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,10 +46,10 @@ public class commentReply extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet commentReply</title>");            
+            out.println("<title>Servlet friendsServlet</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet commentReply at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet friendsServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,9 +68,51 @@ public class commentReply extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
-        PrintWriter out = response.getWriter();
+        String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+        String DB_URL = "jdbc:mysql://127.0.0.1:3306/profile";
         
-        out.print("asdqwe");
+        String USER= "root";
+        String PASS= "";
+        
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+       
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            java.sql.Statement stmt = conn.createStatement();
+            
+            //int profile_id = (int)request.getAttribute("id");
+            String user_id_string = request.getParameter("user_id");
+            int user_id = Integer.parseInt(user_id_string);
+            
+            String friend_id_string = request.getParameter("friend_id");
+            int friend_id = Integer.parseInt(friend_id_string);
+            
+            String insertSQL = "insert into friends"
+                       + "(user_id,friend_id) values"
+                       + "(?,?)";
+               
+            PreparedStatement ps = conn.prepareStatement(insertSQL);
+                
+            ps.setInt(1, user_id);
+            ps.setInt(2, friend_id);
+               
+            int i = ps.executeUpdate();
+                if(i == 1){
+                  out.println("<br>Record has been inserted");
+                }
+                else{
+                  out.println("failed to insert the data");
+                }    
+            
+            stmt.close();
+            conn.close();
+            
+        } catch (Exception e) {
+            out.println("catch profile");
+        }
     }
 
     /**
@@ -74,10 +126,7 @@ public class commentReply extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
-        PrintWriter out = response.getWriter();
-        String var = (String) request.getAttribute("div");
-        out.print("" + var );
+        processRequest(request, response);
     }
 
     /**

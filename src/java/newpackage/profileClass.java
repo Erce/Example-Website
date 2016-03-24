@@ -1,3 +1,5 @@
+package newpackage;
+
 
 
 /*
@@ -15,6 +17,7 @@ public class profileClass {
     String firstName;
     String lastName;
     String password;
+    String imgUrl;
     int id;
 
     public String getEmail() {
@@ -57,5 +60,11 @@ public class profileClass {
         this.id = id;
     }
     
+    public String getImgUrl() {
+        return imgUrl;
+    }
     
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
 }

@@ -1,3 +1,7 @@
+package newpackage;
+
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -6,19 +10,21 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author ulakbim
  */
-public class logout extends HttpServlet {
+public class friendShow extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +43,10 @@ public class logout extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet logout</title>");            
+            out.println("<title>Servlet friendShow</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet logout at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet friendShow at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,7 +64,55 @@ public class logout extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
+        
+        String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+        String DB_URL = "jdbc:mysql://127.0.0.1:3306/profile";
+        
+        String USER= "root";
+        String PASS= "";
+        
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+       
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
+            java.sql.Statement stmt = conn.createStatement();
+            
+            String user_id_string = request.getParameter("user_id");
+            int user_id = Integer.parseInt(user_id_string);
+            String sql = "select * from friends where user_id='" + user_id + "' or friend_id='" + user_id + "'";
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            //String ad = rs.getString("first");
+            //String soyad = rs.getString("soyad");
+            List<friendsClass> fr = new ArrayList<>();
+            while(rs.next()) {
+                friendsClass friend = new friendsClass();
+
+                if(rs.getInt("user_id") == user_id) {
+                    int friend_id = rs.getInt("friend_id");
+                    friend.setId(friend_id);
+                }
+                else if(rs.getInt("friend_id") == user_id) {
+                    int friend_id = rs.getInt("user_id");
+                    friend.setId(friend_id);
+                }
+                fr.add(friend);
+                
+            }
+            /*Gson gs = new Gson();
+            out.print(gs.toJson(fr));*/
+            
+            rs.close();
+            stmt.close();
+            conn.close();
+            
+        } catch (Exception e) {
+            out.println("catch friendShow");
+        }
     }
 
     /**
@@ -72,33 +126,7 @@ public class logout extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //processRequest(request, response);
-        PrintWriter out = response.getWriter();
-        
-        try {
-        
-            HttpSession session = request.getSession(false);
-            if (request.isRequestedSessionIdValid() && session != null) {
-		session.invalidate();
-            }
-            
-            Cookie[] cookies = request.getCookies();
-            
-            for (Cookie cookie : cookies) {
-                String value = cookie.getValue();
-                String name = cookie.getName();
-		cookie.setMaxAge(0);
-		cookie.setValue(null);
-		cookie.setPath("/");
-		response.addCookie(cookie);
-            }
-            
-            RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
-            rd.forward(request, response);
-            
-        }catch(Exception e) {
-            out.println("logout catch");
-        }
+        processRequest(request, response);
     }
 
     /**

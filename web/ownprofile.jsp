@@ -83,7 +83,7 @@
             <div class="navbar" id="asdqwe">
                 <div class="menu">
                     <ul class="menu-ul">
-                        <li class="menu-li"><a href="index.html"><div class="menu-item"><h class="menu-item-h">MAIN PAGE</h></div></a></li>
+                        <li class="menu-li"><a href="login.jsp"><div class="menu-item"><h class="menu-item-h">MAIN PAGE</h></div></a></li>
                         <li class="menu-li"><a href="search.jsp"><div class="menu-item"><h class="menu-item-h">SEARCH</h></div></a></li>
                         <li class="menu-li"><a href="signup.jsp"><div class="menu-item"><h class="menu-item-h">SIGN UP</h></div></a></li>
                         <li class="menu-li"><a href="about.html"><div class="menu-item"><h class="menu-item-h">ABOUT</h></div></a></li>
@@ -94,14 +94,14 @@
                         <script>
                         </script>
                         <form action="search" method="post">                           
-                            <input type="text" placeholder="Search" name="search" id="search">                      
-                            <input type="submit" name="Submit" value="Search" id="submit" onclick="submit()">
+                            <input type="text" placeholder="Search" name="search" id="search">
+                            <input type="submit" name="" value="" id="submit" onclick="submit()">
                         </form>
                     </div>
                 </div>
-                <form action="logout" method="post">
-                    <input type="submit" id="logout" value="Logout">
-                </form>
+                <div class="logout-div">
+                    <a href="logout"><h class="logout-h">Logout</h></a>
+                </div>
             </div>
         </section>
         <div class="mainPage">
@@ -117,7 +117,7 @@
                             <div class="names-inside">
                                 <%
                                     out.print("<h class='names-inside-h'>Name:" + firstName + "</h>");
-                                    out.print("<br><br><br><h clasS='names-inside-h'>Surname:" + lastName + "</h>");
+                                    out.print("<br><br><br><h class='names-inside-h'>Surname:" + lastName + "</h>");
                                     out.print("<br><br>" + id);
                                     /*out.print(profile.firstName);
                                      out.print(profile.lastName);

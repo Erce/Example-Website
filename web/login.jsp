@@ -3,26 +3,36 @@
     Created on : Jun 26, 2015, 2:30:37 PM
     Author     : ulakbim
 --%>
-<%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="newpackage.profile" contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <link href="login.css" rel="stylesheet" type="text/css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Login</title>
-        <script type="text/javascript">
+        <script>
             function makeItPassword()
             {
                document.getElementById("form").innerHTML = "<input id=\"password\" name=\"password\" type=\"password\" value=""/>";
                document.getElementById("password").focus();
-            }
+            }            
          </script>
     </head>
     <body>
+        <%
+            /*boolean flag= false;
+            profile prof = new profile();
+            flag = prof.getCookieInfo(request, response);
+            
+            if (flag) {
+                RequestDispatcher rd = request.getRequestDispatcher(("profile"));
+                rd.forward(request, response);
+            }*/
+        %>
         <div class="navbar">
             <div class="menu">
                 <ul class="menu-ul">
-                    <li class="menu-li"><a href="index.html"><div class="menu-item"><h class="menu-item-h">MAIN PAGE</h></div></a></li>
+                    <li class="menu-li"><a href="login.jsp"><div class="menu-item"><h class="menu-item-h">MAIN PAGE</h></div></a></li>
                     <li class="menu-li"><a href="search.jsp"><div class="menu-item"><h class="menu-item-h">SEARCH</h></div></a></li>
                     <li class="menu-li"><a href="signup.jsp"><div class="menu-item"><h class="menu-item-h">SIGN UP</h></div></a></li>
                     <li class="menu-li"><a href="about.html"><div class="menu-item"><h class="menu-item-h">ABOUT</h></div></a></li>

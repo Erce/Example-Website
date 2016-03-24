@@ -1,48 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <welcome-file-list>
+        <welcome-file>login.jsp</welcome-file>
+    </welcome-file-list>
     <servlet>
         <servlet-name>commentInsertReply</servlet-name>
-        <servlet-class>commentInsertReply</servlet-class>
+        <servlet-class>newpackage.commentInsertReply</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>commentInsert</servlet-name>
-        <servlet-class>commentInsert</servlet-class>
+        <servlet-class>newpackage.commentInsert</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>commentReply</servlet-name>
-        <servlet-class>commentReply</servlet-class>
+        <servlet-class>newpackage.commentReply</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>commentServlet</servlet-name>
-        <servlet-class>commentServlet</servlet-class>
+        <servlet-class>newpackage.commentServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>friendShow</servlet-name>
-        <servlet-class>friendShow</servlet-class>
+        <servlet-class>newpackage.friendShow</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>friendsServlet</servlet-name>
-        <servlet-class>friendsServlet</servlet-class>
+        <servlet-class>newpackage.friendsServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>login</servlet-name>
-        <servlet-class>login</servlet-class>
+        <servlet-class>newpackage.login</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>logout</servlet-name>
-        <servlet-class>logout</servlet-class>
+        <servlet-class>newpackage.logout</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>profile</servlet-name>
-        <servlet-class>profile</servlet-class>
+        <servlet-class>newpackage.profile</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>search</servlet-name>
-        <servlet-class>search</servlet-class>
+        <servlet-class>newpackage.search</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>signUp</servlet-name>
-        <servlet-class>signUp</servlet-class>
+        <servlet-class>newpackage.signUp</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>commentInsertReply</servlet-name>
